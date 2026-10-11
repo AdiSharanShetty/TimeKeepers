@@ -1,0 +1,15 @@
+{
+  "name": "timekeepers",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TimeKeepers - luxury watch store (React frontend + Express/MySQL backend)",
+  "scripts": {
+    "install:all": "npm --prefix backend install && npm --prefix frontend install",
+    "dev": "concurrently -n api,web -c blue,green \"npm --prefix backend run dev\" \"npm --prefix frontend start\"",
+    "server": "npm --prefix backend run serve",
+    "client": "npm --prefix frontend start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}

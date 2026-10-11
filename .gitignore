@@ -1,0 +1,39 @@
+# ---- dependencies ----
+node_modules/
+
+# ---- environment / secrets (never commit) ----
+.env
+.env.local
+.env.*.local
+
+# ---- build output ----
+frontend/build/
+build/
+
+# ---- logs ----
+*.log
+npm-debug.log*
+
+# ---- uploaded files: ship ONLY the 10 seed images, ignore local uploads ----
+backend/uploads/*
+!backend/uploads/.gitkeep
+!backend/uploads/1784869992713-Rolex_Submariner.webp
+!backend/uploads/1784615427372-OmegaSpeedmaster.webp
+!backend/uploads/1785300523615-Casio_Gshock.webp
+!backend/uploads/1784615466662-Seiko_presage.webp
+!backend/uploads/1784615480154-Rolex_sea_gold.png
+!backend/uploads/1784615494160-Seiko_marinemaster.jpg
+!backend/uploads/1784612193645-Casio_cocacola.webp
+!backend/uploads/1784615502504-titan_roamer.jpg
+!backend/uploads/1784612281496-.png
+!backend/uploads/1784612291396-.jpg
+
+# ---- unused local HTML templates (contain a Google Maps API key; not part of the app) ----
+frontend/src/index.html
+frontend/src/services.html
+
+# ---- editor / OS files ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

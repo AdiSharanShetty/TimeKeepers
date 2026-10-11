@@ -1,0 +1,566 @@
+/* ==========================================================================
+   TIMEKEEPERS — Login / Sign Up visual redesign (.auth-luxe)
+   --------------------------------------------------------------------------
+   VISUAL ONLY. Auth.css (shared by both auth pages) stays untouched; every
+   rule below is scoped under the .auth-page.auth-luxe wrapper, which is added
+   only by Login.js and Register.js, so no selector can leak to any other page.
+   No bare element selectors outside the wrapper. Palette: gold #cf9d3f /
+   #e0b563 on near-black; full-page background is the omega.jpg watch photo
+   (src/image/omega.jpg) under a dark scrim + gold glows. Fonts: Playfair
+   Display (headings) and Poppins (body), loaded globally in index.html.
+   ========================================================================== */
+
+/* -------------------------------------------------- wrapper + full background
+   Full-page PICTURE background: the Omega Speedmaster photo (src/image/omega.jpg,
+   bundled by webpack) covers the whole auth page. Layer order (top → bottom):
+   1. gold ambience glows (same gold tint the flat design had)
+   2. dark scrim so text/card stay readable over the photo
+   3. the photo itself, cover-sized and centered
+   Falls back to near-black #0d0b09 while the image loads or if it fails. */
+
+.auth-page.auth-luxe {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
+  gap: 16px;
+  padding: 40px 20px;
+  overflow-x: hidden;
+  color: #f4efe3;
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  background-color: #0d0b09;
+  background-image:
+    radial-gradient(1000px 600px at 12% -10%, rgba(207, 157, 63, 0.17), transparent 62%),
+    radial-gradient(860px 640px at 110% 112%, rgba(224, 181, 99, 0.13), transparent 60%),
+    linear-gradient(
+      180deg,
+      rgba(10, 9, 8, 0.62) 0%,
+      rgba(10, 9, 8, 0.5) 45%,
+      rgba(8, 7, 6, 0.76) 100%
+    ),
+    url('./image/omega.jpg');
+  background-repeat: no-repeat;
+  background-position: center, center, center, center;
+  background-size: auto, auto, auto, cover;
+  background-attachment: scroll;
+}
+
+/* Desktop: pin the photo to the viewport so the glass card glides over it
+   (classic parallax). Skipped on touch/small screens — mobile Safari renders
+   fixed backgrounds unreliably. */
+@media (min-width: 901px) and (hover: hover) and (pointer: fine) {
+  .auth-page.auth-luxe {
+    background-attachment: fixed, fixed, fixed, fixed;
+  }
+}
+
+/* compact brand shown above the card on small screens */
+
+.auth-luxe .auth-compact-brand {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  color: #e0b563;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 3px;
+}
+
+.auth-luxe .auth-compact-brand small {
+  color: rgba(244, 239, 227, 0.6);
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.auth-luxe .auth-compact-brand svg {
+  color: #e0b563;
+}
+
+/* ------------------------------------------------------------- the big card */
+
+.auth-luxe .auth-shell {
+  width: min(1080px, 100%);
+  border-radius: 22px;
+  border: 1px solid rgba(207, 157, 63, 0.35);
+  background: rgba(22, 20, 17, 0.72);
+  backdrop-filter: blur(22px) saturate(1.15);
+  -webkit-backdrop-filter: blur(22px) saturate(1.15);
+  box-shadow:
+    0 40px 90px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(224, 181, 99, 0.16),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+/* NOTE: never set `animation` here — .auth-shell must keep Auth.css's
+   auth-rise on load and .auth-shake on failed validation (Login/Register
+   replay it via JS by re-adding the auth-shake class). */
+
+/* ------------------------------------------------------- left brand panel */
+
+.auth-luxe .auth-showcase {
+  padding: 46px 42px;
+  /* translucent glass — the photo background shows through (blurred by the
+     shell's backdrop-filter), keeping the picture visible across the card */
+  background:
+    radial-gradient(440px 320px at 50% 30%, rgba(207, 157, 63, 0.2), transparent 70%),
+    linear-gradient(
+      165deg,
+      rgba(27, 23, 19, 0.68) 0%,
+      rgba(16, 14, 11, 0.74) 70%,
+      rgba(13, 11, 9, 0.8) 100%
+    );
+  border-right: 1px solid rgba(207, 157, 63, 0.25);
+}
+
+.auth-luxe .auth-showcase > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* the old watermark was clipped (right: -14px; bottom: -46px). Make it a
+   clean, fully visible decorative element sitting behind the content. */
+.auth-luxe .auth-showcase::after {
+  right: auto;
+  left: 0;
+  bottom: 8px;
+  width: 100%;
+  z-index: 0;
+  text-align: center;
+  text-indent: 12px;
+  font-size: clamp(46px, 6.5vw, 74px);
+  letter-spacing: 12px;
+  color: rgba(224, 181, 99, 0.06);
+}
+
+.auth-luxe .auth-brand {
+  color: #e0b563;
+  font-size: 15px;
+  letter-spacing: 3px;
+}
+
+.auth-luxe .auth-brand small {
+  color: rgba(244, 239, 227, 0.6);
+}
+
+.auth-luxe .auth-headline {
+  margin: 26px 0 8px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(30px, 3.6vw, 44px);
+  line-height: 1.14;
+  font-weight: 700;
+}
+
+.auth-luxe .auth-headline em {
+  background: linear-gradient(92deg, #e0b563, #cf9d3f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.auth-luxe .auth-sub {
+  max-width: 40ch;
+  color: rgba(244, 239, 227, 0.78);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.auth-luxe .auth-glow {
+  background: radial-gradient(circle, rgba(207, 157, 63, 0.38) 0%, transparent 65%);
+}
+
+.auth-luxe .auth-ring {
+  border-color: rgba(224, 181, 99, 0.5);
+  box-shadow: 0 0 0 10px rgba(207, 157, 63, 0.07), 0 0 50px rgba(207, 157, 63, 0.28);
+}
+
+/* .auth-watch (slideshow) is intentionally untouched — its active state is
+   driven by Auth.css's .auth-watch.active and must keep working. */
+
+/* -------------------------------------------------- caption, dots, trust perks */
+
+.auth-luxe .auth-caption strong {
+  font-size: 16.5px;
+  letter-spacing: 0.4px;
+}
+
+.auth-luxe .auth-caption span {
+  color: #e0b563;
+  font-size: 13.5px;
+}
+
+.auth-luxe .auth-dots button {
+  height: 5px;
+  background: rgba(244, 239, 227, 0.22);
+}
+
+.auth-luxe .auth-dots button:hover {
+  background: rgba(224, 181, 99, 0.55);
+}
+
+.auth-luxe .auth-dots button.active,
+.auth-luxe .auth-dots button.active:hover {
+  background: #e0b563;
+  width: 34px;
+}
+
+.auth-luxe .auth-perks {
+  margin-top: 22px;
+  gap: 10px;
+}
+
+.auth-luxe .auth-perks li {
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid rgba(207, 157, 63, 0.18);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 14px;
+  color: rgba(244, 239, 227, 0.85);
+}
+
+.auth-luxe .auth-perks svg {
+  color: #e0b563;
+}
+
+/* -------------------------------------------------------- right (form) panel */
+
+.auth-luxe .auth-form-side {
+  padding: 46px 46px;
+  background: rgba(16, 14, 11, 0.6);
+}
+
+.auth-luxe .auth-eyebrow {
+  color: #e0b563;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.auth-luxe .auth-title {
+  margin: 10px 0 6px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 700;
+}
+
+.auth-luxe .auth-lead {
+  margin: 0 0 24px;
+  font-size: 15px;
+  color: rgba(244, 239, 227, 0.72);
+}
+
+/* -------------------------------------------- segmented Log in / Sign up tabs */
+
+.auth-luxe .auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(207, 157, 63, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.auth-luxe .auth-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: rgba(244, 239, 227, 0.72);
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-luxe .auth-tab:hover {
+  background: rgba(207, 157, 63, 0.16);
+  color: #f4efe3;
+}
+
+.auth-luxe .auth-tab.is-current {
+  background: linear-gradient(92deg, #cf9d3f, #e0b563);
+  color: #14120f;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(207, 157, 63, 0.35);
+  cursor: default;
+}
+
+.auth-luxe .auth-tab:focus-visible {
+  outline: 2px solid #e0b563;
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------- form fields */
+
+.auth-luxe .auth-form {
+  gap: 18px;
+}
+
+.auth-luxe .auth-field {
+  display: block;
+}
+
+.auth-luxe .auth-field-label {
+  display: block;
+  margin: 0 0 7px 2px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: rgba(244, 239, 227, 0.82);
+}
+
+.auth-luxe .auth-form .MuiOutlinedInput-root {
+  min-height: 50px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f4efe3;
+  font-size: 15px;
+  transition: box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.auth-luxe .auth-form .MuiOutlinedInput-root input {
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
+.auth-luxe .auth-form .MuiOutlinedInput-root:hover fieldset {
+  border-color: rgba(224, 181, 99, 0.6);
+}
+
+.auth-luxe .auth-form .MuiOutlinedInput-root.Mui-focused {
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 0 3px rgba(224, 181, 99, 0.28);
+}
+
+.auth-luxe .auth-form .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: #e0b563;
+}
+
+.auth-luxe .auth-form .MuiOutlinedInput-root.Mui-error fieldset {
+  border-color: #ff8f7e;
+}
+
+.auth-luxe .auth-form .MuiOutlinedInput-root.Mui-error.Mui-focused {
+  box-shadow: 0 0 0 3px rgba(255, 143, 126, 0.28);
+}
+
+.auth-luxe .auth-form input::placeholder {
+  color: rgba(244, 239, 227, 0.55);
+  opacity: 1;
+}
+
+.auth-luxe .auth-form .MuiIconButton-root {
+  color: rgba(244, 239, 227, 0.7);
+}
+
+.auth-luxe .auth-form .MuiIconButton-root:hover {
+  color: #e0b563;
+}
+
+.auth-luxe .auth-form .MuiIconButton-root:focus-visible {
+  outline: 2px solid #e0b563;
+  outline-offset: 2px;
+}
+
+.auth-luxe .auth-form .MuiFormHelperText-root {
+  margin: 6px 0 0 12px;
+  font-size: 13px;
+  color: #ff9d8f;
+}
+
+.auth-luxe .auth-form .MuiFormHelperText-root:empty {
+  display: none;
+}
+
+/* -------------------------------------------------- hint, error, submit button */
+
+.auth-luxe .auth-hint {
+  margin: -6px 2px 0;
+  font-size: 13px;
+  color: #f5c454;
+}
+
+.auth-luxe .auth-error.MuiAlert-root {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 143, 126, 0.55);
+  border-radius: 12px;
+  background: rgba(192, 57, 43, 0.18);
+  color: #ffb4a8;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.auth-luxe .auth-error .MuiAlert-icon {
+  color: #ff8f7e;
+}
+
+.auth-luxe .auth-error .MuiAlert-message {
+  padding: 0;
+  font-size: 14px;
+}
+
+.auth-luxe .auth-submit {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 4px;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #14120f;
+  background: linear-gradient(92deg, #cf9d3f 0%, #e0b563 100%);
+  box-shadow: 0 14px 30px rgba(207, 157, 63, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.25s ease, filter 0.2s ease;
+}
+
+.auth-luxe .auth-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 18px 36px rgba(207, 157, 63, 0.45);
+}
+
+.auth-luxe .auth-submit:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(0.97);
+}
+
+.auth-luxe .auth-submit:focus-visible {
+  outline: 2px solid #e0b563;
+  outline-offset: 3px;
+}
+
+.auth-luxe .auth-submit:disabled {
+  background: rgba(207, 157, 63, 0.25);
+  color: rgba(244, 239, 227, 0.62);
+  box-shadow: none;
+  filter: none;
+  transform: none;
+  cursor: not-allowed;
+}
+
+.auth-luxe .auth-spinner {
+  border-color: rgba(20, 18, 15, 0.3);
+  border-top-color: #14120f;
+}
+
+/* ------------------------------------------ forgot link, footer, register bits */
+
+.auth-luxe .auth-row {
+  margin-top: -4px;
+}
+
+.auth-luxe .auth-link-btn {
+  font-size: 14px;
+  color: rgba(244, 239, 227, 0.72);
+  text-decoration-color: rgba(224, 181, 99, 0.5);
+}
+
+.auth-luxe .auth-link-btn:hover {
+  color: #e0b563;
+}
+
+.auth-luxe .auth-link-btn:focus-visible {
+  outline: 2px solid #e0b563;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.auth-luxe .auth-fineprint {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  color: rgba(244, 239, 227, 0.62);
+}
+
+.auth-luxe .auth-strength-label {
+  font-size: 13px;
+}
+
+.auth-luxe .auth-match {
+  font-size: 13px;
+}
+
+.auth-luxe .auth-success h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 28px;
+}
+
+.auth-luxe .auth-success p {
+  font-size: 14.5px;
+  color: rgba(244, 239, 227, 0.75);
+}
+
+/* ----------------------------------------------------------------- responsive */
+
+@media (max-width: 900px) {
+  .auth-page.auth-luxe {
+    padding: 28px 16px;
+    gap: 14px;
+  }
+
+  .auth-luxe .auth-compact-brand {
+    display: flex;
+  }
+
+  .auth-luxe .auth-shell {
+    grid-template-columns: 1fr;
+    border-radius: 18px;
+  }
+
+  .auth-luxe .auth-showcase {
+    display: none;
+  }
+
+  .auth-luxe .auth-form-side {
+    padding: 34px 26px;
+  }
+}
+
+@media (max-width: 430px) {
+  .auth-page.auth-luxe {
+    padding: 20px 12px;
+  }
+
+  .auth-luxe .auth-form-side {
+    padding: 28px 18px;
+  }
+
+  .auth-luxe .auth-title {
+    font-size: 26px;
+  }
+
+  .auth-luxe .auth-tabs {
+    margin-bottom: 16px;
+  }
+
+  .auth-luxe .auth-fineprint {
+    font-size: 12.5px;
+  }
+}
+
+/* ------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-luxe .auth-tab,
+  .auth-luxe .auth-submit,
+  .auth-luxe .auth-link-btn,
+  .auth-luxe .auth-form .MuiOutlinedInput-root {
+    transition: none;
+  }
+}
+
+

@@ -1,0 +1,1 @@
+placeholder .gitkeep — keeps backend/uploads/ in git; the 10 seed images are un-ignored in the root .gitignore.

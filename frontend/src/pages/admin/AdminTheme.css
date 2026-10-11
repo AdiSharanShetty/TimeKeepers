@@ -1,0 +1,394 @@
+/* =============================================================================
+   AdminTheme.css — VISUAL ONLY styling for the admin pages.
+   -----------------------------------------------------------------------------
+   Loaded by AdminTheme.js (which wraps the admin routes in App.js). Every rule
+   is scoped under the page wrappers (.adm-page / .adm-content / .adm-side) or
+   under MUI root classes inside .adm-page, so nothing here can touch the user
+   pages. Palette matches the site: gold #cf9d3f / #e0b563 on near-black
+   #14120f (same scheme as AuthRedesign.css). Data, columns, and content are
+   untouched — this file only paints them.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ layout */
+.adm-page {
+  display: flex;
+  min-height: 100vh;
+  box-sizing: border-box;
+  color: #f4efe3;
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  /* near-black base + very subtle gold glow so long tables sit on the same
+     atmosphere as the rest of the site; solid fallback for slow loads */
+  background-color: #14120f;
+  background-image:
+    radial-gradient(1100px 520px at 85% -10%, rgba(207, 157, 63, 0.10), transparent 60%),
+    radial-gradient(900px 600px at -10% 110%, rgba(207, 157, 63, 0.06), transparent 55%);
+}
+
+.adm-side {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  height: 100vh;
+}
+
+.adm-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100vh;
+  width: 250px;
+  padding: 26px 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #1b1713 0%, #14120f 100%);
+  border-right: 1px solid rgba(224, 181, 99, 0.18);
+}
+
+.adm-nav-link {
+  display: block;
+  padding: 11px 14px;
+  border-radius: 10px;
+  color: rgba(244, 239, 227, 0.78);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.adm-nav-link:hover {
+  background-color: rgba(207, 157, 63, 0.14);
+  color: #e0b563;
+}
+
+.adm-nav-link--active {
+  background-color: rgba(207, 157, 63, 0.22);
+  color: #e0b563;
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 #cf9d3f;
+}
+
+.adm-nav-logout {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.adm-nav-logout .MuiButton-root {
+  width: 100%;
+}
+
+.adm-content {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-left: 270px;
+  padding: 24px 32px 56px 12px;
+  box-sizing: border-box;
+  width: calc(100% - 270px);
+}
+
+/* ------------------------------------------------------------- page header */
+.adm-page h1,
+.adm-page h2,
+.adm-page .adm-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  color: #f4efe3;
+  letter-spacing: 0.01em;
+}
+
+.adm-page h1 { font-size: 34px; margin: 6px 0 10px; }
+.adm-page h2 { font-size: 30px; margin: 4px 0 12px; }
+
+/* thin gold rule under the page title */
+.adm-page h1::after,
+.adm-page h2::after,
+.adm-page .adm-heading::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 3px;
+  margin-top: 12px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #cf9d3f, rgba(207, 157, 63, 0));
+}
+
+.adm-page .adm-error {
+  color: #ff9d8a;
+  font-size: 14px;
+  margin: 4px 0 14px;
+}
+
+/* ------------------------------------------------------- dashboard KPIs */
+/* Large stat cards on the AdminDash landing page. Bigger than the mock:
+   ~200px tall with 30px padding and oversized Playfair values. Only paint
+   (matches the gold-on-black scheme); all numbers come from AdminDash.js. */
+.adm-page .adm-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+  margin-top: 26px;
+}
+
+.adm-page .adm-kpi-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  min-height: 200px;
+  padding: 30px 34px;
+  border: 1px solid rgba(224, 181, 99, 0.18);
+  border-radius: 16px;
+  background-color: rgba(29, 26, 21, 0.92);
+  background-image:
+    radial-gradient(140% 100% at 0% 0%, rgba(207, 157, 63, 0.08), transparent 55%);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.adm-page .adm-kpi-card:hover {
+  border-color: rgba(224, 181, 99, 0.42);
+  transform: translateY(-3px);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
+}
+
+/* Total Sales stands out: brighter gold frame + glow, like the mock */
+.adm-page .adm-kpi-card--featured {
+  border-color: rgba(224, 181, 99, 0.55);
+  background-image:
+    radial-gradient(140% 100% at 0% 0%, rgba(207, 157, 63, 0.18), transparent 60%);
+  box-shadow:
+    0 0 0 1px rgba(207, 157, 63, 0.20),
+    0 22px 54px rgba(0, 0, 0, 0.45),
+    0 0 46px rgba(207, 157, 63, 0.12);
+}
+
+.adm-page .adm-kpi-label {
+  color: rgba(244, 239, 227, 0.72);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.adm-page .adm-kpi-value {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #f4efe3;
+}
+
+.adm-page .adm-kpi-sub {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.adm-page .adm-kpi-sub--up { color: #7ecb82; }
+.adm-page .adm-kpi-sub--down { color: #ef8a72; }
+.adm-page .adm-kpi-sub--warn { color: #e0b563; }
+.adm-page .adm-kpi-sub--muted { color: rgba(244, 239, 227, 0.55); }
+
+/* fixed-height DataGrid container (Manage Users) */
+.adm-page .adm-grid {
+  height: 400px;
+  width: 100%;
+}
+
+/* --------------------------------------------------------- data surfaces */
+/* MUI Paper (table containers) + plain content panels */
+.adm-page .MuiPaper-root {
+  background-color: rgba(29, 26, 21, 0.92);
+  background-image: none;
+  border: 1px solid rgba(224, 181, 99, 0.16);
+  border-radius: 14px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.adm-page .MuiTableCell-root {
+  border-color: rgba(224, 181, 99, 0.12);
+  color: #f4efe3;
+}
+
+.adm-page .MuiTableCell-head {
+  background-color: rgba(207, 157, 63, 0.12);
+  color: #e0b563;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.adm-page .MuiTableBody-root .MuiTableRow-root:hover {
+  background-color: rgba(224, 181, 99, 0.07);
+}
+
+/* thumbnail images inside table cells keep a neat gold-tinted frame */
+.adm-page .MuiTableCell-root img {
+  border: 1px solid rgba(224, 181, 99, 0.35);
+  border-radius: 8px;
+}
+
+/* ---------------------------------------------------------------- buttons */
+.adm-page .MuiButton-containedSecondary {
+  box-shadow: none;
+}
+
+.adm-page .MuiIconButton-root {
+  transition: background-color 0.15s ease;
+}
+
+.adm-page .MuiIconButton-root:hover {
+  background-color: rgba(207, 157, 63, 0.16);
+}
+
+/* ---------------------------------------------------------------- dropzone */
+.adm-page .adm-dropzone {
+  border: 2px dashed rgba(207, 157, 63, 0.55);
+  padding: 22px 16px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-top: 18px;
+  color: rgba(244, 239, 227, 0.75);
+  font-size: 14px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.adm-page .adm-dropzone:hover {
+  border-color: #cf9d3f;
+  background-color: rgba(207, 157, 63, 0.08);
+}
+
+/* ---------------------------------------------------------------- DataGrid */
+/* @mui/x-data-grid v7 paints its own light surface; re-tint it here. The grid
+   lives inside .adm-page (not a portal), so scoped selectors are safe. */
+.adm-page .MuiDataGrid-root {
+  background-color: transparent;
+  color: #f4efe3;
+  border: none;
+}
+
+.adm-page .MuiDataGrid-columnHeaders,
+.adm-page .MuiDataGrid-columnHeaderRow {
+  background-color: rgba(207, 157, 63, 0.12);
+  color: #e0b563;
+  border-bottom: 1px solid rgba(224, 181, 99, 0.25);
+}
+
+.adm-page .MuiDataGrid-columnHeaderTitle {
+  color: #e0b563;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.adm-page .MuiDataGrid-columnSeparator {
+  color: rgba(224, 181, 99, 0.3);
+}
+
+.adm-page .MuiDataGrid-cell {
+  border-color: rgba(224, 181, 99, 0.10);
+  color: #f4efe3;
+}
+
+.adm-page .MuiDataGrid-row {
+  border-color: rgba(224, 181, 99, 0.10);
+}
+
+.adm-page .MuiDataGrid-row:hover,
+.adm-page .MuiDataGrid-row.Mui-selected,
+.adm-page .MuiDataGrid-row.Mui-selected:hover {
+  background-color: rgba(224, 181, 99, 0.10) !important;
+  color: #f4efe3;
+}
+
+.adm-page .MuiDataGrid-row.Mui-selected {
+  background-color: rgba(207, 157, 63, 0.22) !important;
+}
+
+.adm-page .MuiDataGrid-footerContainer {
+  background-color: transparent;
+  color: rgba(244, 239, 227, 0.85);
+  border-top: 1px solid rgba(224, 181, 99, 0.16);
+}
+
+.adm-page .MuiDataGrid-footerContainer .MuiIconButton-root:hover {
+  background-color: rgba(207, 157, 63, 0.16);
+}
+
+.adm-page .MuiDataGrid-overlay,
+.adm-page .MuiDataGrid-emptyContent {
+  color: rgba(244, 239, 227, 0.6);
+}
+
+/* checkboxes + selection controls */
+.adm-page .MuiCheckbox-root,
+.adm-page .MuiCheckbox-root.Mui-checked,
+.adm-page .MuiCheckbox-root.MuiCheckbox-indeterminate {
+  color: #e0b563;
+}
+
+/* pagination */
+.adm-page .MuiTablePagination-root,
+.adm-page .MuiTablePagination-selectIcon,
+.adm-page .MuiTablePagination-displayedRows {
+  color: rgba(244, 239, 227, 0.85);
+}
+
+/* ------------------------------------------------------------ small screens */
+@media (max-width: 900px) {
+  .adm-page {
+    flex-direction: column;
+  }
+
+  .adm-side {
+    position: static;
+    height: auto;
+    width: 100%;
+  }
+
+  .adm-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    height: auto;
+    width: 100%;
+    padding: 12px 14px;
+    border-right: none;
+    border-bottom: 1px solid rgba(224, 181, 99, 0.18);
+  }
+
+  .adm-nav-link {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .adm-nav-link--active {
+    box-shadow: none;
+  }
+
+  .adm-nav-logout {
+    margin-top: 0;
+    margin-left: auto;
+    padding-top: 0;
+  }
+
+  .adm-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 24px 16px 40px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-page .MuiIconButton-root,
+  .adm-page .adm-dropzone,
+  .adm-page .adm-kpi-card {
+    transition: none;
+  }
+
+  .adm-page .adm-kpi-card:hover {
+    transform: none;
+  }
+}
